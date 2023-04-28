@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ArticleCategoryController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,7 +24,15 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
+
+
+        Route::resource('article', ArticleController::class);
+        Route::resource('category-article', ArticleCategoryController::class);
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+
+
 });
