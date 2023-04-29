@@ -11,7 +11,7 @@ class ArticleCategory extends Model
 {
     use HasFactory, SoftDeletes, Sluggable;
 
-    protected $guard = ['id'];
+    protected $guarded = ['id'];
 
 
     public function article()
