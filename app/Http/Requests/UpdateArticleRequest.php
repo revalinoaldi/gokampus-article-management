@@ -11,7 +11,7 @@ class UpdateArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class UpdateArticleRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255|min:4',
-            'slug' => 'required|max:255|unique:posts|min:4',
+            // 'slug' => 'required|max:255|unique:posts|min:4',
             'kategori' => 'required',
             'image' => 'image|file|max:2048',
             'body' => 'required||min:4'

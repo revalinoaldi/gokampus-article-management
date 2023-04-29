@@ -13,7 +13,7 @@ class Article extends Model
 {
     use HasFactory, SoftDeletes, Sluggable;
 
-    protected $guard = ['id'];
+    protected $guarded = ['id'];
     protected $with = ['category','author'];
 
     public function category()
