@@ -15,12 +15,14 @@ class ArticleController extends Controller
     public function index(Request $request)
     {
         $id = $request->input('id');
-        $limit = $request->input('limit', 10);
+        $limit = $request->input('limit');
         $search = $request->input('search');
         $author = $request->input('author');
         $categories = $request->input('categories');
 
-        $article = Article::with(['category'])->where('is_publish', "1");
+        $article = Article::with(['category'])->where('is_publish', "1")->whereHas('category', function($q){
+            return $q->where('deleted_at', NULL);
+        });
 
         if($id)
         {
@@ -43,7 +45,8 @@ class ArticleController extends Controller
             $article->filter(request(['search', 'categories','author']));
 
         return ResponseFormatter::success(
-            $article->paginate($limit),
+            // $article->paginate($limit),
+            ['data' => $article->get()],
             'Data list article berhasil diambil'
         );
     }

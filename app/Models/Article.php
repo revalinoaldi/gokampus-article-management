@@ -18,7 +18,7 @@ class Article extends Model
 
     public function category()
     {
-        return $this->belongsTo(ArticleCategory::class, 'category_id', 'id');
+        return $this->belongsTo(ArticleCategory::class, 'category_id', 'id')->withTrashed();
     }
 
     public function author()

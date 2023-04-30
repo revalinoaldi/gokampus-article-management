@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
+use Yajra\DataTables\Facades\DataTables;
 
 class ArticleController extends Controller
 {
@@ -13,7 +18,23 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        $response = Http::get('http://article-test.test/api/article');
+        $data = $response->json();
+        // dd($data);
+
+        return view('article.index', [
+            'article' => $data['data'],
+            'articles' => $this->paginate($data['data']['data'])
+        ]);
+    }
+
+    public function paginate($items, $perPage = 10, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, [
+            'path'  => url()->current()
+        ]);
     }
 
     /**
