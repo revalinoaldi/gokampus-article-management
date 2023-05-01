@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateArticleRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateArticleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Auth::check();
     }
 
     /**
@@ -23,10 +24,9 @@ class UpdateArticleRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255|min:4',
-            // 'slug' => 'required|max:255|unique:posts|min:4',
-            'kategori' => 'required',
-            'image' => 'image|file|max:2048',
-            'body' => 'required||min:4'
+            'categories' => 'required|exists:article_categories,id',
+            'body' => 'required||min:4',
+            'is_publish' => 'required'
         ];
     }
 }

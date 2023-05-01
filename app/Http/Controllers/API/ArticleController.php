@@ -19,10 +19,17 @@ class ArticleController extends Controller
         $search = $request->input('search');
         $author = $request->input('author');
         $categories = $request->input('categories');
+        $publish = $request->input('publish');
 
-        $article = Article::with(['category'])->where('is_publish', "1")->whereHas('category', function($q){
-            return $q->where('deleted_at', NULL);
-        });
+        $article = Article::with(['category'])
+                    // ->where('is_publish', "1")
+                    ->whereHas('category', function($q){
+                        return $q->where('deleted_at', NULL);
+                    });
+
+        if($publish == "1"){
+            $article = $article->where('is_publish', $publish);
+        }
 
         if($id)
         {

@@ -15,14 +15,19 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('article.index') }}" :active="request()->routeIs('article.*')">
-                        {{ __('Article') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('category-article.index') }}" :active="request()->routeIs('category-article.*')">
-                        {{ __('Category Article') }}
-                    </x-nav-link>
+                    @auth
+                        <x-nav-link href="{{ route('article.index') }}" :active="request()->routeIs('article.*')">
+                            {{ __('Article') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('category-article.index') }}" :active="request()->routeIs('category-article.*')">
+                            {{ __('Category Article') }}
+                        </x-nav-link>
+                    @endauth
+
                 </div>
             </div>
+
+            @auth
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <!-- Teams Dropdown -->
@@ -129,6 +134,13 @@
                     </x-dropdown>
                 </div>
             </div>
+            @else
+            <div class="hidden sm:flex sm:items-center sm:ml-6">
+                <div class="ml-3 relative">
+                    <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
+                </div>
+            </div>
+            @endauth
 
             <!-- Hamburger -->
             <div class="-mr-2 flex items-center sm:hidden">
@@ -149,6 +161,8 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
         </div>
+
+        @auth
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
@@ -221,5 +235,7 @@
                 @endif
             </div>
         </div>
+        @endauth
+
     </div>
 </nav>
