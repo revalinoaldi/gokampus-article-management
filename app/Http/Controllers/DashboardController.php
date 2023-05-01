@@ -13,6 +13,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // $redis = Redis::connection(); diel
         $params = [
             'publish' => "1"
         ];
