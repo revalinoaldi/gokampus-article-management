@@ -18,7 +18,7 @@ class Article extends Model
 
     public function category()
     {
-        return $this->belongsTo(ArticleCategory::class, 'category_id', 'id');
+        return $this->belongsTo(ArticleCategory::class, 'category_id', 'id')->withTrashed();
     }
 
     public function author()
@@ -45,7 +45,13 @@ class Article extends Model
         $query->when($filter['search'] ?? false, function($query, $search){
             return $query->where('title','like', "%" .$search. "%")
                   ->orWhere('body','like', "%" .$search. "%")
-                  ->orWhere('excerpt','like', "%" .$search. "%");
+                  ->orWhere('excerpt','like', "%" .$search. "%")
+                  ->orwhereHas('category', function($query) use($search){
+                    $query->where('name','like',"%{$search}%");
+                  })->orwhereHas('author', function($query) use($search){
+                    $query->where('username','like',"%{$search}%")
+                          ->orWhere('name','like',"%{$search}%");
+                  });
         });
 
         $query->when($filter['category'] ?? false, function($query, $category){
