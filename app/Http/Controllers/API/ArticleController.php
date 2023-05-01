@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\Cacher;
+use App\Helpers\RedisCacher;
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class ArticleController extends Controller
 {
+    private  $cacher;
+    public function __construct(){
+        $this->cacher =  new Cacher('file');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -56,6 +64,11 @@ class ArticleController extends Controller
             ['data' => $article->get()],
             'Data list article berhasil diambil'
         );
+    }
+
+    private function _setCache()
+    {
+
     }
 
     /**
